@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 
 function Provider({ children }) {
-  const [nameKey, setNameKey] = useState({ filterByName: {
+  const [nameContext, setNameContext] = useState({ filterByName: {
     name: '',
   } });
 
-  const [numberFilter, setNumberFilter] = useState({ filterByNumericValues: [
+  const [numberContext, setNumberContext] = useState({ filterByNumericValues: [
     {
       column: 'population',
       comparison: 'maior que',
@@ -15,11 +15,15 @@ function Provider({ children }) {
     },
   ] });
 
+  const [appliedFilters, setAppliedFilters] = useState([]);
+
   const contextValue = {
-    nameKey,
-    setNameKey,
-    numberFilter,
-    setNumberFilter,
+    nameContext,
+    setNameContext,
+    numberContext,
+    setNumberContext,
+    appliedFilters,
+    setAppliedFilters,
   };
   return (
     <PlanetsContext.Provider value={ contextValue }>

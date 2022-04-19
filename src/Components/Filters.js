@@ -4,7 +4,7 @@ import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Filters() {
-  const { setNumberFilter } = useContext(PlanetsContext);
+  const { setNumberContext, setAppliedFilters } = useContext(PlanetsContext);
   const [columnFilter, setColumnFilter] = useState('population');
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState(0);
@@ -20,12 +20,14 @@ function Filters() {
   });
 
   const sendValues = () => {
-    setNumberFilter(values());
+    const value = values();
+    setNumberContext(value);
+    setAppliedFilters((prevState) => [...prevState, value]);
   };
 
   return (
-    <div className="d-flex gap-3">
-      <InputGroup className="mb-3">
+    <div className="d-flex">
+      <InputGroup className="mb-3 gap-1">
         <Form.Select
           id="column-filter"
           className="bg-dark text-light"
@@ -40,8 +42,6 @@ function Filters() {
           <option value="rotation_period">rotation_period</option>
           <option value="surface_water">surface_water</option>
         </Form.Select>
-      </InputGroup>
-      <InputGroup className="mb-3">
         <Form.Select
           className="bg-dark text-light"
           aria-label="Default select comparison"
@@ -53,8 +53,6 @@ function Filters() {
           <option value="igual a">igual a</option>
           <option value="menor que">menor que</option>
         </Form.Select>
-      </InputGroup>
-      <InputGroup className="mb-3">
         <FormControl
           className="bg-dark text-light"
           placeholder="number"
@@ -65,8 +63,6 @@ function Filters() {
           value={ valueFilter }
           onChange={ ({ target }) => setValueFilter(target.value) }
         />
-      </InputGroup>
-      <InputGroup className="mb-3">
         <Button
           variant="warning"
           data-testid="button-filter"

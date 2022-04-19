@@ -5,7 +5,7 @@ import { BiSearchAlt } from 'react-icons/bi';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Search() {
-  const { nameKey, setNameKey } = useContext(PlanetsContext);
+  const { nameContext, setNameContext } = useContext(PlanetsContext);
 
   return (
     <InputGroup className="mb-3">
@@ -20,9 +20,9 @@ function Search() {
         placeholder="Search"
         aria-label="Search"
         aria-describedby="basic-addon1"
-        value={ nameKey.filterByName.name }
+        value={ nameContext.filterByName.name }
         onChange={ ({ target }) => (
-          setNameKey({ filterByName: { name: target.value } })
+          setNameContext({ filterByName: { name: target.value } })
         ) }
         data-testid="name-filter"
       />

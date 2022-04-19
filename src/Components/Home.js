@@ -4,6 +4,7 @@ import style from './Home.module.css';
 import Search from './Search';
 import PlanetsContext from '../context/PlanetsContext';
 import Filters from './Filters';
+import AppliedFilters from './AppliedFilters';
 
 function App() {
   const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -11,8 +12,8 @@ function App() {
   const [tableHead, setTableHead] = useState([]);
   const [planetsSearch, setPlanetsSearch] = useState([]);
 
-  const { nameKey, numberFilter } = useContext(PlanetsContext);
-  const { filterByName } = nameKey;
+  const { nameContext, numberContext, appliedFilters } = useContext(PlanetsContext);
+  const { filterByName } = nameContext;
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -24,7 +25,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const { column, comparison, value } = numberFilter.filterByNumericValues[0];
+    const { column, comparison, value } = numberContext.filterByNumericValues[0];
     let filter = [];
     if (comparison === 'maior que') {
       filter = planets.filter((element) => (
@@ -45,7 +46,7 @@ function App() {
     }
     setPlanets(filter);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [numberFilter]);
+  }, [numberContext]);
 
   useEffect(() => {
     const researchedPlanets = planets.filter((element) => (
@@ -59,6 +60,14 @@ function App() {
       <section className={ style.filters_container }>
         <Search />
         <Filters />
+      </section>
+      <section className="d-flex flex-nowrap gap-2">
+        {
+          appliedFilters.map((el, index) => (<AppliedFilters
+            key={ `${el.filterByNumericValues.column}${index}` }
+            data={ el }
+          />))
+        }
       </section>
       <div className={ style.table }>
         <Table striped bordered hover variant="dark" responsive>
