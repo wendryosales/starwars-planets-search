@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 
-const initialContext = {};
-
 function Provider({ children }) {
+  const [nameKey, setNameKey] = useState({ filterByName: {
+    name: '',
+  } });
+
+  const contextValue = {
+    nameKey,
+    setNameKey,
+  };
   return (
-    <PlanetsContext.Provider value={ initialContext }>
+    <PlanetsContext.Provider value={ contextValue }>
       {children}
     </PlanetsContext.Provider>
   );

@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import style from './Home.module.css';
+import Search from './Search';
+import PlanetsContext from '../context/PlanetsContext';
 
 function App() {
   const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
-  const [planets, setPlanets] = useState([{ name: 'pandora' }]);
+  const [planets, setPlanets] = useState([]);
   const [tableHead, setTableHead] = useState([]);
+  const [planetsSearch, setPlanetsSearch] = useState([]);
+
+  const { nameKey } = useContext(PlanetsContext);
+  const { filterByName } = nameKey;
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -16,8 +22,18 @@ function App() {
     getPlanets();
   }, []);
 
+  useEffect(() => {
+    const researchedPlanets = planets.filter((element) => (
+      element.name.toLowerCase().indexOf(filterByName.name) >= 0
+    ));
+    setPlanetsSearch(researchedPlanets);
+  }, [filterByName.name, planets]);
+
   return (
     <main className={ style.main }>
+      <section className={ style.filters_container }>
+        <Search />
+      </section>
       <div className={ style.table }>
         <Table striped bordered hover variant="dark" responsive>
           <thead>
@@ -32,7 +48,7 @@ function App() {
           </thead>
           <tbody>
             {
-              planets.map((currentPlanet, index) => (
+              planetsSearch.map((currentPlanet, index) => (
 
                 <tr key={ index }>
                   {

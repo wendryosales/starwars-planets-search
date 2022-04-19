@@ -1,10 +1,15 @@
 .main {
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 100%;
 }
 
 .table {
   width: 80%;
+}
+
+.filters_container {
+  padding: 2rem;
 }
