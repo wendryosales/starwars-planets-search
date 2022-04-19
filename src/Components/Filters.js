@@ -1,13 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Filters() {
-  const { setNumberContext, setAppliedFilters } = useContext(PlanetsContext);
+  const { setNumberContext,
+    setAppliedFilters,
+    appliedFilters } = useContext(PlanetsContext);
   const [columnFilter, setColumnFilter] = useState('population');
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState(0);
+  const [columnOriginal, setColumnOriginal] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const values = () => ({
     filterByNumericValues: [
@@ -18,6 +27,16 @@ function Filters() {
       },
     ],
   });
+
+  useEffect(() => {
+    appliedFilters.forEach(({ filterByNumericValues }) => {
+      setColumnOriginal((prevState) => (
+        prevState.filter((el) => (
+          el !== filterByNumericValues[0].column
+        ))
+      ));
+    });
+  }, [appliedFilters]);
 
   const sendValues = () => {
     const value = values();
@@ -36,11 +55,11 @@ function Filters() {
           value={ columnFilter }
           onChange={ ({ target }) => setColumnFilter(target.value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {
+            columnOriginal.map((el) => (
+              <option key={ el } value={ el }>{el}</option>
+            ))
+          }
         </Form.Select>
         <Form.Select
           className="bg-dark text-light"
