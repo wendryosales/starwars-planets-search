@@ -7,9 +7,19 @@ function Provider({ children }) {
     name: '',
   } });
 
+  const [numberFilter, setNumberFilter] = useState({ filterByNumericValues: [
+    {
+      column: 'population',
+      comparison: 'maior que',
+      value: '0',
+    },
+  ] });
+
   const contextValue = {
     nameKey,
     setNameKey,
+    numberFilter,
+    setNumberFilter,
   };
   return (
     <PlanetsContext.Provider value={ contextValue }>
